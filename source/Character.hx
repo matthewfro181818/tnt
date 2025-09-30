@@ -513,6 +513,7 @@ class Character extends FlxNestedSkewSprite {
 
 		dance();
 
+		flipX = !flipX;
 		facing = (isPlayer ? FlxObject.LEFT : FlxObject.RIGHT);
 
 		if (isModel) {
