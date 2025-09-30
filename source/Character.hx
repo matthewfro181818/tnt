@@ -17,8 +17,7 @@ import flixel.graphics.frames.FlxAtlasFrames;
 
 using StringTools;
 
-class Character extends FlxNestedSkewSprite
-{
+class Character extends FlxNestedSkewSprite {
 	public var animOffsets:Map<String, Array<Float>> = new Map<String, Array<Float>>();
 	public var debugMode:Bool = false;
 
@@ -71,8 +70,7 @@ class Character extends FlxNestedSkewSprite
 	public var atlasContainer:AtlasThing;
 	public var atlasActive:Bool = false;
 
-	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
-	{
+	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false) {
 		super(x, y);
 
 		curCharacter = character;
@@ -81,8 +79,52 @@ class Character extends FlxNestedSkewSprite
 		// var tex:FlxAtlasFrames;
 		antialiasing = true;
 
-		switch (curCharacter)
-		{
+		switch (curCharacter) {
+			case 'Brian':
+				frames = Paths.getSparrowAtlas("characters/BrianBF");
+				antialiasing = true;
+				flipX = true;
+				setGraphicSize(Std.int(width * 1));
+				updateHitbox();
+
+				// Animations
+				addAnimation("idle", "idle", 24, true);
+				addAnimation("singLEFT", "left", 24, false);
+				addAnimation("singDOWN", "down", 24, false);
+				addAnimation("singUP", "up", 24, false);
+				addAnimation("singRIGHT", "right", 24, false);
+
+				addAnimation("singLEFTmiss", "lemiss", 24, false);
+				addAnimation("singDOWNmiss", "domiss", 24, false);
+				addAnimation("singUPmiss", "umiss", 24, false);
+				addAnimation("singRIGHTmiss", "rimiss", 24, false);
+
+				addAnimation("hey", "hey", 24, false);
+				addAnimation("firstDeath", "firstdeath", 24, false);
+				addAnimation("fakeoutDeath", "BF dies", 24, false);
+				addAnimation("deathLoop", "seconddeath", 24, true);
+				addAnimation("deathConfirm", "thirdeath", 24, false);
+				addAnimation("scared", "BF idle shaking", 24, false);
+
+				// Position offsets
+				addOffset("idle", -5, 0);
+				addOffset("singLEFT", 35, 20);
+				addOffset("singDOWN", -5, -30);
+				addOffset("singUP", -25, 0);
+				addOffset("singRIGHT", -85, 26);
+				addOffset("singLEFTmiss", 35, 30);
+				addOffset("singDOWNmiss", -5, -20);
+				addOffset("singUPmiss", -25, 0);
+				addOffset("singRIGHTmiss", -5, 0);
+				addOffset("hey", 0, -5);
+				addOffset("firstDeath", 55, 128);
+				addOffset("fakeoutDeath", 60, 120);
+				addOffset("deathLoop", -1, -20);
+				addOffset("deathConfirm", 186, 34);
+				addOffset("scared", 185, 38);
+
+				playAnim("idle"); // Starting anim
+				isPlayer = true;
 			case 'spirit':
 				frames = Paths.getSparrowAtlasFunk('characters/spirit');
 				animation.addByPrefix('idle', "idle spirit", 24, false);
@@ -451,18 +493,13 @@ class Character extends FlxNestedSkewSprite
 
 		facing = (isPlayer ? FlxObject.LEFT : FlxObject.RIGHT);
 
-		if (isModel)
-		{
+		if (isModel) {
 			modelView = new ModelView(viewX, viewY, ambient, specular, diffuse);
 			loadGraphicFromSprite(modelView.sprite);
 			antialiasing = true;
-		}
-		else if (atlasActive)
-		{
-			if (facing != initFacing)
-			{
-				if (atlasContainer.animList.contains(animRedirect['singRIGHT']))
-				{
+		} else if (atlasActive) {
+			if (facing != initFacing) {
+				if (atlasContainer.animList.contains(animRedirect['singRIGHT'])) {
 					var oldOffset = animOffsets['singRIGHT'];
 					animOffsets['singRIGHT'] = animOffsets['singLEFT'];
 					animOffsets['singLEFT'] = oldOffset;
@@ -472,8 +509,7 @@ class Character extends FlxNestedSkewSprite
 				}
 
 				// IF THEY HAVE MISS ANIMATIONS??
-				if (atlasContainer.animList.contains(animRedirect['singRIGHTmiss']))
-				{
+				if (atlasContainer.animList.contains(animRedirect['singRIGHTmiss'])) {
 					var oldOffset = animOffsets['singRIGHTmiss'];
 					animOffsets['singRIGHTmiss'] = animOffsets['singLEFTmiss'];
 					animOffsets['singLEFTmiss'] = oldOffset;
@@ -482,8 +518,7 @@ class Character extends FlxNestedSkewSprite
 					animRedirect['singLEFTmiss'] = oldRIGHT;
 				}
 
-				if (atlasContainer.animList.contains(animRedirect['singRIGHT-alt']))
-				{
+				if (atlasContainer.animList.contains(animRedirect['singRIGHT-alt'])) {
 					var oldOffset = animOffsets['singRIGHT-alt'];
 					animOffsets['singRIGHT-alt'] = animOffsets['singLEFT-alt'];
 					animOffsets['singLEFT-alt'] = oldOffset;
@@ -493,13 +528,9 @@ class Character extends FlxNestedSkewSprite
 				}
 			}
 			atlasContainer.finishCallback = animationEnd;
-		}
-		else
-		{
-			if (facing != initFacing)
-			{
-				if (animation.getByName('singRIGHT') != null)
-				{
+		} else {
+			if (facing != initFacing) {
+				if (animation.getByName('singRIGHT') != null) {
 					var oldRight = animation.getByName('singRIGHT').frames;
 					var oldOffset = animOffsets['singRIGHT'];
 					animation.getByName('singRIGHT').frames = animation.getByName('singLEFT').frames;
@@ -509,8 +540,7 @@ class Character extends FlxNestedSkewSprite
 				}
 
 				// IF THEY HAVE MISS ANIMATIONS??
-				if (animation.getByName('singRIGHTmiss') != null)
-				{
+				if (animation.getByName('singRIGHTmiss') != null) {
 					var oldMiss = animation.getByName('singRIGHTmiss').frames;
 					var oldOffset = animOffsets['singRIGHTmiss'];
 					animation.getByName('singRIGHTmiss').frames = animation.getByName('singLEFTmiss').frames;
@@ -519,8 +549,7 @@ class Character extends FlxNestedSkewSprite
 					animOffsets['singLEFTmiss'] = oldOffset;
 				}
 
-				if (animation.getByName('singRIGHT-alt') != null)
-				{
+				if (animation.getByName('singRIGHT-alt') != null) {
 					var oldRight = animation.getByName('singRIGHT-alt').frames;
 					var oldOffset = animOffsets['singRIGHT-alt'];
 					animation.getByName('singRIGHT-alt').frames = animation.getByName('singLEFT-alt').frames;
@@ -534,14 +563,12 @@ class Character extends FlxNestedSkewSprite
 		}
 	}
 
-	function createAtlas()
-	{
+	function createAtlas() {
 		atlasActive = true;
 		atlasContainer = new AtlasThing();
 	}
 
-	function loadAtlas(spritemap:FlxGraphicAsset, spritemapJson:String, animationJson:String)
-	{
+	function loadAtlas(spritemap:FlxGraphicAsset, spritemapJson:String, animationJson:String) {
 		// atlasActive = true;
 		// atlasContainer = new AtlasThing();
 		atlasContainer.loadAtlas(spritemap, spritemapJson, animationJson);
@@ -549,20 +576,16 @@ class Character extends FlxNestedSkewSprite
 		add(atlasContainer);
 	}
 
-	override function update(elapsed:Float)
-	{
+	override function update(elapsed:Float) {
 		tryLoadModel();
 
-		if (isModel && model != null && model.fullyLoaded && modelView != null)
-		{
+		if (isModel && model != null && model.fullyLoaded && modelView != null) {
 			modelView.update();
 			model.update();
 		}
 
-		if (!isPlayer || PlayState.autoPlay)
-		{
-			if (getCurAnim().startsWith('sing'))
-			{
+		if (!isPlayer || PlayState.autoPlay) {
+			if (getCurAnim().startsWith('sing')) {
 				holdTimer += elapsed;
 			}
 
@@ -570,15 +593,13 @@ class Character extends FlxNestedSkewSprite
 
 			if (curCharacter == 'dad')
 				dadVar = 6.1;
-			if (holdTimer >= Conductor.stepCrochet * dadVar * 0.001)
-			{
+			if (holdTimer >= Conductor.stepCrochet * dadVar * 0.001) {
 				idleEnd();
 				holdTimer = 0;
 			}
 		}
 
-		switch (curCharacter)
-		{
+		switch (curCharacter) {
 			case 'gf':
 				if (getCurAnim() == 'hairFall' && getCurAnimFinished())
 					playAnim('danceRight');
@@ -592,15 +613,11 @@ class Character extends FlxNestedSkewSprite
 	/**
 	 * FOR GF DANCING SHIT
 	 */
-	public function dance(?ignoreDebug:Bool = false)
-	{
-		if (!debugMode || ignoreDebug && !isModel)
-		{
-			switch (curCharacter)
-			{
+	public function dance(?ignoreDebug:Bool = false) {
+		if (!debugMode || ignoreDebug && !isModel) {
+			switch (curCharacter) {
 				case 'gf' | 'gf-car' | 'gf-christmas' | 'gf-pixel' | 'gfSinger':
-					if (!getCurAnim().startsWith('hair'))
-					{
+					if (!getCurAnim().startsWith('hair')) {
 						danced = !danced;
 
 						if (danced)
@@ -628,16 +645,12 @@ class Character extends FlxNestedSkewSprite
 					if (holdTimer == 0)
 						playAnim('idle', true);
 			}
-		}
-		else if (holdTimer == 0)
-		{
-			if (isModel && model == null)
-			{
+		} else if (holdTimer == 0) {
+			if (isModel && model == null) {
 				trace("NO DANCE - NO MODEL");
 				return;
 			}
-			if (isModel && !model.fullyLoaded)
-			{
+			if (isModel && !model.fullyLoaded) {
 				trace("NO DANCE - NO FULLY LOAD");
 				return;
 			}
@@ -647,33 +660,25 @@ class Character extends FlxNestedSkewSprite
 		}
 	}
 
-	public function idleEnd(?ignoreDebug:Bool = false)
-	{
+	public function idleEnd(?ignoreDebug:Bool = false) {
 		if (curCharacter == 'nothing')
 			return;
 
-		if (!isModel && (!debugMode || ignoreDebug) && !atlasActive)
-		{
-			switch (curCharacter)
-			{
+		if (!isModel && (!debugMode || ignoreDebug) && !atlasActive) {
+			switch (curCharacter) {
 				case 'gf' | 'gf-car' | 'gf-christmas' | 'gf-pixel' | "spooky" | "senpai" | "gfSinger":
 					playAnim('danceRight', true, false, animation.getByName('danceRight').numFrames - 1);
 				default:
 					playAnim('idle', true, false, animation.getByName('idle').numFrames - 1);
 			}
-		}
-		else if (!isModel && (!debugMode || ignoreDebug))
-		{
-			switch (curCharacter)
-			{
+		} else if (!isModel && (!debugMode || ignoreDebug)) {
+			switch (curCharacter) {
 				case 'gf' | 'gf-car' | 'gf-christmas' | 'gf-pixel' | "spooky" | "senpai" | "gfSinger":
 					playAnim('danceRight', true, false, atlasContainer.maxIndex[animRedirect['danceRight']]);
 				default:
 					playAnim('idle', true, false, atlasContainer.maxIndex[animRedirect['idle']]);
 			}
-		}
-		else if (isModel && (!debugMode || ignoreDebug))
-		{
+		} else if (isModel && (!debugMode || ignoreDebug)) {
 			if (animExists(getCurAnim() + "End"))
 				playAnim(getCurAnim() + "End", true, false);
 			else
@@ -683,50 +688,39 @@ class Character extends FlxNestedSkewSprite
 
 	var curAtlasAnim:String;
 
-	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
-	{
+	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void {
 		if (curCharacter == 'nothing')
 			return;
 
-		if (AnimName.endsWith('-alt') && !animExists(AnimName))
-		{
+		if (AnimName.endsWith('-alt') && !animExists(AnimName)) {
 			AnimName = AnimName.substring(0, AnimName.length - 4);
 		}
 
-		if (isModel && model != null && model.fullyLoaded)
-		{
+		if (isModel && model != null && model.fullyLoaded) {
 			if (AnimName.endsWith('miss'))
 				color = 0x5462bf;
 			else
 				color = 0xffffff;
 			model.playAnim(AnimName, Force, Frame);
-		}
-		else if (!isModel && atlasActive)
-		{
+		} else if (!isModel && atlasActive) {
 			var daAnim:String = AnimName;
 
 			if (!Force && !getCurAnimFinished())
 				return;
 
-			if (AnimName.endsWith('miss') && !atlasContainer.animList.contains(animRedirect[AnimName]))
-			{
+			if (AnimName.endsWith('miss') && !atlasContainer.animList.contains(animRedirect[AnimName])) {
 				daAnim = AnimName.substring(0, AnimName.length - 4);
 				color = 0x5462bf;
-			}
-			else
+			} else
 				color = 0xffffff;
 
 			var daOffset = animOffsets.get(daAnim);
-			if (animOffsets.exists(daAnim))
-			{
-				if (initWidth > -1)
-				{
+			if (animOffsets.exists(daAnim)) {
+				if (initWidth > -1) {
 					atlasContainer.relativeX = -(((facing != initFacing ? -1 : 1) * daOffset[0]
 						+ (facing != initFacing ? atlasContainer.animWidths[animRedirect[daAnim]] - initFrameWidth : 0)) * scale.x);
 					atlasContainer.relativeY = -(daOffset[1] * scale.y);
-				}
-				else
-				{
+				} else {
 					atlasContainer.relativeX = -(daOffset[0] * scale.x);
 					atlasContainer.relativeY = -(daOffset[1] * scale.y);
 				}
@@ -741,32 +735,23 @@ class Character extends FlxNestedSkewSprite
 			frameHeight = atlasContainer.frameHeight;
 			updateHitbox();
 
-			if (curCharacter == 'gf')
-			{
-				if (AnimName == 'singLEFT')
-				{
+			if (curCharacter == 'gf') {
+				if (AnimName == 'singLEFT') {
 					danced = true;
-				}
-				else if (AnimName == 'singRIGHT')
-				{
+				} else if (AnimName == 'singRIGHT') {
 					danced = false;
 				}
 
-				if (AnimName == 'singUP' || AnimName == 'singDOWN')
-				{
+				if (AnimName == 'singUP' || AnimName == 'singDOWN') {
 					danced = !danced;
 				}
 			}
-		}
-		else if (!isModel)
-		{
+		} else if (!isModel) {
 			var daAnim:String = AnimName;
-			if (AnimName.endsWith('miss') && animation.getByName(AnimName) == null)
-			{
+			if (AnimName.endsWith('miss') && animation.getByName(AnimName) == null) {
 				daAnim = AnimName.substring(0, AnimName.length - 4);
 				color = 0x5462bf;
-			}
-			else
+			} else
 				color = 0xffffff;
 
 			animation.play(daAnim, Force, Reversed, Frame);
@@ -774,30 +759,23 @@ class Character extends FlxNestedSkewSprite
 			updateHitbox();
 
 			var daOffset = animOffsets.get(animation.curAnim.name);
-			if (animOffsets.exists(animation.curAnim.name))
-			{
+			if (animOffsets.exists(animation.curAnim.name)) {
 				if (initFrameWidth > -1)
 					offset.set(((facing != initFacing ? -1 : 1) * daOffset[0] + (facing != initFacing ? frameWidth - initFrameWidth : 0)) * scale.x + offset.x,
 						daOffset[1] * scale.y + offset.y);
 				else
 					offset.set(daOffset[0] * scale.x + offset.x, daOffset[1] * scale.y + offset.y);
-			}
-			else
+			} else
 				offset.set(0, 0);
 
-			if (curCharacter == 'gf')
-			{
-				if (AnimName == 'singLEFT')
-				{
+			if (curCharacter == 'gf') {
+				if (AnimName == 'singLEFT') {
 					danced = true;
-				}
-				else if (AnimName == 'singRIGHT')
-				{
+				} else if (AnimName == 'singRIGHT') {
 					danced = false;
 				}
 
-				if (AnimName == 'singUP' || AnimName == 'singDOWN')
-				{
+				if (AnimName == 'singUP' || AnimName == 'singDOWN') {
 					danced = !danced;
 				}
 			}
@@ -807,36 +785,26 @@ class Character extends FlxNestedSkewSprite
 			canAutoIdle = true;
 	}
 
-	public function addOffset(name:String, x:Float = 0, y:Float = 0)
-	{
+	public function addOffset(name:String, x:Float = 0, y:Float = 0) {
 		animOffsets[name] = [x, y];
 	}
 
-	function animationEnd(name:String)
-	{
-		if (isModel)
-		{
-		}
-		else
-		{
+	function animationEnd(name:String) {
+		if (isModel) {} else {
 			var theAnim = (atlasActive ? getCurAnim() : name);
-			switch (curCharacter)
-			{
+			switch (curCharacter) {
 				case "dad" | "mom" | "mom-car" | "bf-car":
-					if (!theAnim.contains('miss'))
-					{
+					if (!theAnim.contains('miss')) {
 						playAnim(theAnim, true, false, getFrameCount(theAnim) - 4);
 					}
 
 				case "bf" | "bf-christmas":
-					if (theAnim.contains("miss"))
-					{
+					if (theAnim.contains("miss")) {
 						playAnim(theAnim, true, false, getFrameCount(theAnim) - 4);
 					}
 
 				case "monster-christmas" | "monster":
-					switch (theAnim)
-					{
+					switch (theAnim) {
 						case "idle":
 							playAnim(theAnim, false, false, 10);
 						case "singUP":
@@ -851,99 +819,78 @@ class Character extends FlxNestedSkewSprite
 			}
 		}
 		var theAnim = (atlasActive ? getCurAnim() : name);
-		if (theAnim == 'dodge' || theAnim == 'hit' || theAnim == 'attack')
-		{
+		if (theAnim == 'dodge' || theAnim == 'hit' || theAnim == 'attack') {
 			canAutoIdle = true;
 			idleEnd();
 		}
 	}
 
-	public function getCurAnim()
-	{
+	public function getCurAnim() {
 		if (curCharacter == 'nothing')
 			return "";
 
-		if (isModel)
-		{
+		if (isModel) {
 			if (model != null && model.fullyLoaded)
 				return model.currentAnim;
 			else
 				return "";
-		}
-		else if (atlasActive)
-		{
+		} else if (atlasActive) {
 			return curAtlasAnim;
-		}
-		else
+		} else
 			return animation.curAnim.name;
 	}
 
-	public function getFrameCount(name:String)
-	{
-		if (atlasActive)
-		{
+	public function getFrameCount(name:String) {
+		if (atlasActive) {
 			return atlasContainer.maxIndex[animRedirect[name]] + 1;
-		}
-		else if (!isModel)
-		{
+		} else if (!isModel) {
 			return animation.getByName(name).numFrames;
 		}
 		return -1;
 	}
 
-	public function getCurAnimFinished()
-	{
+	public function getCurAnimFinished() {
 		if (atlasActive)
 			return atlasContainer.curAnimFinished;
 		else
 			return animation.curAnim.finished;
 	}
 
-	public function animExists(anim:String)
-	{
-		if (isModel)
-		{
+	public function animExists(anim:String) {
+		if (isModel) {
 			if (model != null && model.fullyLoaded)
 				return model.animationSet.hasAnimation(anim);
 			else
 				return false;
-		}
-		else if (atlasActive)
-		{
+		} else if (atlasActive) {
 			return atlasContainer.animList.contains(animRedirect[anim]);
-		}
-		else
+		} else
 			return animation.getByName(anim) != null;
 	}
 
-	override public function updateHitbox():Void
-	{
+	override public function updateHitbox():Void {
 		width = Math.abs(scale.x) * frameWidth;
 		height = Math.abs(scale.y) * frameHeight;
-		if (!atlasActive)
-		{
+		if (!atlasActive) {
 			offset.set(-0.5 * (width - frameWidth), -0.5 * (height - frameHeight));
 			centerOrigin();
 		}
 	}
 
-	function setAtlasAnim(name:String, animName:String, looping:Bool = false)
-	{
+	function setAtlasAnim(name:String, animName:String, looping:Bool = false) {
 		animRedirect[name] = animName;
 		atlasContainer.setLooping(animName, looping);
 		atlasContainer.onlyTheseAnims.push(animName);
 	}
 
-	public function tryLoadModel()
-	{
+	public function tryLoadModel() {
 		if (!isModel)
 			return;
 		if (modelMutex)
 			return;
 		if (isModel && beganLoading)
 			return;
-		if (isModel && !beganLoading)
-		{
+		if (isModel && !beganLoading) {
 			beganLoading = true;
 			modelMutex = true;
 			model = new ModelThing(this);
@@ -951,12 +898,9 @@ class Character extends FlxNestedSkewSprite
 		}
 	}
 
-	override public function destroy()
-	{
-		if (isModel)
-		{
-			if (modelMutexThing == model)
-			{
+	override public function destroy() {
+		if (isModel) {
+			if (modelMutexThing == model) {
 				modelMutexThing = null;
 				modelMutex = false;
 			}
@@ -966,19 +910,16 @@ class Character extends FlxNestedSkewSprite
 			if (modelView != null)
 				modelView.destroy();
 			modelView = null;
-			if (animSpeed != null)
-			{
+			if (animSpeed != null) {
 				animSpeed.clear();
 				animSpeed = null;
 			}
 		}
-		if (animRedirect != null)
-		{
+		if (animRedirect != null) {
 			animRedirect.clear();
 			animRedirect = null;
 		}
-		if (animRedirect != null)
-		{
+		if (animRedirect != null) {
 			animRedirect.clear();
 			animRedirect = null;
 		}
