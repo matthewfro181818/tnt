@@ -88,12 +88,12 @@ class Character extends FlxNestedSkewSprite {
 				updateHitbox();
 
 				// Animations
-				addAnimation("danceLeft", "idle", 24, false, [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
-				addAnimation("danceRight", "idle", 24, false, [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]);
-				addAnimation("sad", "sad", 24, false, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
-				addAnimation("cheer", "hey", 24, false);
-				addAnimation("combo50", "hey", 24, false);
-				addAnimation("drop70", "sad", 24, false, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+				animation.addByPrefix("danceLeft", "idle", 24, false, [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
+				animation.addByPrefix("danceRight", "idle", 24, false, [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]);
+				animation.addByPrefix("sad", "sad", 24, false, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+				animation.addByPrefix("cheer", "hey", 24, false);
+				animation.addByPrefix("combo50", "hey", 24, false);
+				animation.addByPrefix("drop70", "sad", 24, false, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
 
 				// Position offsets
 				addOffset("danceLeft", -5, 0);
@@ -111,23 +111,23 @@ class Character extends FlxNestedSkewSprite {
 				updateHitbox();
 
 				// Animations
-				addAnimation("idle", "idle", 24, true);
-				addAnimation("singLEFT", "left", 24, false);
-				addAnimation("singDOWN", "down", 24, false);
-				addAnimation("singUP", "up", 24, false);
-				addAnimation("singRIGHT", "right", 24, false);
+				animation.addByPrefix("idle", "idle", 24, true);
+				animation.addByPrefix("singLEFT", "left", 24, false);
+				animation.addByPrefix("singDOWN", "down", 24, false);
+				animation.addByPrefix("singUP", "up", 24, false);
+				animation.addByPrefix("singRIGHT", "right", 24, false);
 
-				addAnimation("singLEFTmiss", "lemiss", 24, false);
-				addAnimation("singDOWNmiss", "domiss", 24, false);
-				addAnimation("singUPmiss", "umiss", 24, false);
-				addAnimation("singRIGHTmiss", "rimiss", 24, false);
+				animation.addByPrefix("singLEFTmiss", "lemiss", 24, false);
+				animation.addByPrefix("singDOWNmiss", "domiss", 24, false);
+				animation.addByPrefix("singUPmiss", "umiss", 24, false);
+				animation.addByPrefix("singRIGHTmiss", "rimiss", 24, false);
 
-				addAnimation("hey", "hey", 24, false);
-				addAnimation("firstDeath", "firstdeath", 24, false);
-				addAnimation("fakeoutDeath", "BF dies", 24, false);
-				addAnimation("deathLoop", "seconddeath", 24, true);
-				addAnimation("deathConfirm", "thirdeath", 24, false);
-				addAnimation("scared", "BF idle shaking", 24, false);
+				animation.addByPrefix("hey", "hey", 24, false);
+				animation.addByPrefix("firstDeath", "firstdeath", 24, false);
+				animation.addByPrefix("fakeoutDeath", "BF dies", 24, false);
+				animation.addByPrefix("deathLoop", "seconddeath", 24, true);
+				animation.addByPrefix("deathConfirm", "thirdeath", 24, false);
+				animation.addByPrefix("scared", "BF idle shaking", 24, false);
 
 				// Position offsets
 				addOffset("idle", -5, 0);
