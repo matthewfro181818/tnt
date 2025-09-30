@@ -83,17 +83,16 @@ class Character extends FlxNestedSkewSprite {
 			case 'Blaze':
 				frames = Paths.getSparrowAtlas("characters/BlazeGF");
 				antialiasing = true;
-				flipX = false;
 				setGraphicSize(Std.int(width * 1));
 				updateHitbox();
 
 				// Animations
-				animation.addByPrefix("danceLeft", "idle", 24, false, [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
-				animation.addByPrefix("danceRight", "idle", 24, false, [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]);
-				animation.addByPrefix("sad", "sad", 24, false, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+                                animation.addByIndices("danceLeft", "idle", [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
+				animation.addByIndices("danceRight", "idle", [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
+				animation.addByIndices("sad", "sad", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, false);
 				animation.addByPrefix("cheer", "hey", 24, false);
 				animation.addByPrefix("combo50", "hey", 24, false);
-				animation.addByPrefix("drop70", "sad", 24, false, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+                                animation.addByIndices("drop70", "sad", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, false);
 
 				// Position offsets
 				addOffset("danceLeft", -5, 0);
@@ -102,11 +101,11 @@ class Character extends FlxNestedSkewSprite {
 				addOffset("cheer", -5, 20);
 				addOffset("combo50", -5, 20);
 				addOffset("drop70", -5, -70);
-                playAnim("danceRight"); // Starting anim
+                                playAnim("danceRight"); // Starting anim
 			case 'Brian':
 				frames = Paths.getSparrowAtlas("characters/BrianBF");
 				antialiasing = true;
-				flipX = true;
+				initFacing = FlxObject.LEFT;
 				setGraphicSize(Std.int(width * 1));
 				updateHitbox();
 
