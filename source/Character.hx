@@ -80,6 +80,29 @@ class Character extends FlxNestedSkewSprite {
 		antialiasing = true;
 
 		switch (curCharacter) {
+			case 'Blaze':
+				frames = Paths.getSparrowAtlas("characters/BlazeGF");
+				antialiasing = true;
+				flipX = false;
+				setGraphicSize(Std.int(width * 1));
+				updateHitbox();
+
+				// Animations
+				addAnimation("danceLeft", "idle", 24, false, [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
+				addAnimation("danceRight", "idle", 24, false, [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]);
+				addAnimation("sad", "sad", 24, false, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+				addAnimation("cheer", "hey", 24, false);
+				addAnimation("combo50", "hey", 24, false);
+				addAnimation("drop70", "sad", 24, false, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+
+				// Position offsets
+				addOffset("danceLeft", -5, 0);
+				addOffset("danceRight", -5, 0);
+				addOffset("sad", -5, -70);
+				addOffset("cheer", -5, 20);
+				addOffset("combo50", -5, 20);
+				addOffset("drop70", -5, -70);
+                playAnim("danceRight"); // Starting anim
 			case 'Brian':
 				frames = Paths.getSparrowAtlas("characters/BrianBF");
 				antialiasing = true;
