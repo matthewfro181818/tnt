@@ -70,8 +70,6 @@ class Character extends FlxNestedSkewSprite {
 	public var atlasContainer:AtlasThing;
 	public var atlasActive:Bool = false;
 
-	public var flipX:Bool = false;
-
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false) {
 		super(x, y);
 
