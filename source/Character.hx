@@ -105,7 +105,6 @@ class Character extends FlxNestedSkewSprite {
 			case 'Brian':
 				frames = Paths.getSparrowAtlas("characters/BrianBF");
 				antialiasing = true;
-				initFacing = FlxObject.LEFT;
 				setGraphicSize(Std.int(width * 1));
 				updateHitbox();
 
